@@ -6,14 +6,17 @@ const Realmadrid = ({ data }) => {
   const [searchdata, setSearchdata] = useState([]);
   const [info, setInfo] = useState("");
   const [displey, setDispley] = useState(true);
+  const [load, setLoad] = useState(false);
 
 
   useEffect(() => {
     search
   }, [setSearchdata])
 
+
   const search = async (e) => {
     if (e.key === "Enter") {
+      setLoad(true);
       const response = await fetch(`https://restcountries.com/v2/name/${info}`);
       const rezult = await response.json();
 
@@ -22,9 +25,24 @@ const Realmadrid = ({ data }) => {
         setInfo("");
       }
       else {
-        return setSearchdata(rezult[0]), setDispley(false)
+        return setSearchdata(rezult[0]), setDispley(false), setLoad(false);
       }
     }
+  }
+
+  if (load) {
+    return (<>
+      <div className="w-25 m-auto">
+        <button class="btn btn-primary" type="button" disabled>
+          <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
+          <span class="sr-only">Loading...</span>
+        </button>
+        <button class="btn btn-primary" type="button" disabled>
+          <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
+          Loading...
+        </button>
+      </div>
+    </>)
   }
 
   const gobek = () => {
